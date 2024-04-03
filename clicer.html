@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.clicker {
+  background-color: blue;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  line-height: 200px;
+  color: white;
+  font-size: 24px;
+}
+.button {
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="clicker" onclick="earnCoins()">Click Here to Earn Coins</div>
+<h1>Coins: <span id="coins">0</span></h1>
+<button class="button" onclick="upgradeClicker()">Upgrade Clicker (Cost: <span id="upgradeCost">100</span> coins)</button>
+<button class="button" onclick="buyFastClicker()">Buy Fast Clicker for <span id="fastClickerCost">3000</span> coins</button>
+
+<script>
+var coins = 0;
+var clickValue = 1;
+var clickerLevel = 0;
+var upgradeCost = 100;
+var fastClickerCost = 300;
+var fastClickerActive = false;
+
+function earnCoins() {
+  coins += clickValue;
+  document.getElementById("coins").innerHTML = coins;
+}
+
+function upgradeClicker() {
+  if (coins >= upgradeCost) {
+    coins -= upgradeCost;
+    clickValue += clickerLevel + 2;
+    clickerLevel++;
+    upgradeCost = Math.floor(100 + clickerLevel * 30);
+    document.getElementById("coins").innerHTML = coins;
+    document.getElementById("upgradeCost").innerHTML = upgradeCost;
+  } else {
+    alert("Not enough coins to upgrade clicker!");
+  }
+}
+
+function buyFastClicker() {
+  if (coins >= fastClickerCost && !fastClickerActive) {
+    coins -= fastClickerCost;
+    fastClickerActive = true;
+    document.getElementById("coins").innerHTML = coins;
+    setInterval(function() {
+      if (fastClickerActive) {
+        coins += clickValue;
+        document.getElementById("coins").innerHTML = coins;
+        document.getElementById("fastClickerCost").innerHTML = fastClickerCost;
+      }
+    }, 1000);
+    
+    setTimeout(function() {
+      fastClickerActive = false;
+    }, 30000); // 30 секунд
+
+    fastClickerCost += 1000; // увеличиваем стоимость на 1000 монет
+  } else {
+    alert("Not enough coins to buy Fast Clicker or already active!");
+  }
+}
+       
+</script>
+
+</body>
+</html>
